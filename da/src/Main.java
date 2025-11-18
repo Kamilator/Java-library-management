@@ -1,6 +1,6 @@
-import java.awt.Color;
 import javax.swing.*;
-
+import java.awt.*;
+import javax.swing.plaf.basic.BasicScrollBarUI;
 public class Main extends JFrame {
     public Main() {
         setTitle("Library");
@@ -25,7 +25,6 @@ public class Main extends JFrame {
         JButton menu = new JButton("<>");
         JButton enter = new JButton();
         JTextField search = new JTextField("Search book title");
-        JScrollPane scroll = new JScrollPane();
 
         leftPanel.setLayout(null);
         middlePanel.setLayout(null);
@@ -58,11 +57,6 @@ public class Main extends JFrame {
         menu.setBackground(Color.decode(buttonColor));
         menu.setForeground(Color.GRAY);
 
-        middlePanel.add(scroll);
-        scroll.setBounds(10, 10, 690, 490);
-        scroll.setBackground(Color.decode("#28374f"));
-        scroll.setLayout(null);
-
         topPanel.add(search);
         topPanel.add(enter);
 
@@ -84,8 +78,22 @@ public class Main extends JFrame {
         rightPanel.setBounds(925, 5, 55, 550);
         topPanel.setBounds(210, 5, 710, 45);
 
+        leftPanel.setBorder(BorderFactory.createLineBorder(Color.decode("#051226"), 3));
+        middlePanel.setBorder(BorderFactory.createLineBorder(Color.decode("#051226"), 3));
+        rightPanel.setBorder(BorderFactory.createLineBorder(Color.decode("#051226"), 3));
+        topPanel.setBorder(BorderFactory.createLineBorder(Color.decode("#051226"), 3));
+
+        Account.setBorder(BorderFactory.createLineBorder(Color.decode("#061836"), 2));
+        bookList.setBorder(BorderFactory.createLineBorder(Color.decode("#061836"), 2));
+        borrowBook.setBorder(BorderFactory.createLineBorder(Color.decode("#061836"), 2));
+        menu.setBorder(BorderFactory.createLineBorder(Color.decode("#061836"), 2));
+        enter.setBorder(BorderFactory.createLineBorder(Color.decode("#061836"), 2));
+
+        search.setBorder(BorderFactory.createLineBorder(Color.GRAY, 3));
+
+
         Account.addActionListener(e -> UserAccount(middlePanel, topPanel, panelColor));
-        bookList.addActionListener(e -> showBookList(middlePanel, topPanel));
+        bookList.addActionListener(e -> showBookList(middlePanel, topPanel, panelColor,buttonColor));
         borrowBook.addActionListener(e -> showBorrowBook(middlePanel, topPanel, panelColor));
         menu.addActionListener(e -> showMenu());
         enter.addActionListener(e -> enterSearch());
@@ -97,11 +105,46 @@ public class Main extends JFrame {
         this.add(panel);
 
         panel.setBounds(210, 5, 710, 550 );
+        panel.setBorder(BorderFactory.createLineBorder(Color.decode("#051226"), 3));
         panel.setBackground(Color.decode(panelColor));
     }
-    public static void showBookList(JPanel middlePanel, JPanel topPanel){
+    public static void showBookList(JPanel middlePanel, JPanel topPanel, String panelColor, String buttonColor){
         middlePanel.setVisible(true);
         topPanel.setVisible(true);
+        middlePanel.removeAll();
+        middlePanel.setLayout(null);
+
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new GridLayout(0, 5, 5, 5)); 
+
+        //placeholder btn
+        for (int i = 1; i <= 50; i++) {
+            JButton btn = new JButton("Book " + i);
+            btn.setPreferredSize(new Dimension(100, 150));
+            btn.setMaximumSize(new Dimension(100, 150));
+            btn.setMinimumSize(new Dimension(100, 150));
+            btn.setBackground(Color.decode(buttonColor));
+            btn.setForeground(Color.LIGHT_GRAY);
+            contentPanel.add(btn);
+        }
+
+        JScrollPane scrollPane = new JScrollPane(contentPanel);
+        contentPanel.setBackground(Color.decode(panelColor));
+        scrollPane.setBounds(10, 10, middlePanel.getWidth() - 20, middlePanel.getHeight() - 20);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+        scrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
+            @Override
+            protected void configureScrollBarColors() {
+                this.thumbColor = Color.decode(buttonColor);
+                this.trackColor = Color.decode(panelColor);
+            }
+        });
+
+        middlePanel.add(scrollPane);
+        middlePanel.revalidate();
+        middlePanel.repaint();
     }
     public  void showBorrowBook(JPanel middlePanel, JPanel topPanel, String panelColor){
         middlePanel.setVisible(false);
@@ -110,6 +153,7 @@ public class Main extends JFrame {
         this.add(panel);
 
         panel.setBounds(210, 5, 710, 550 );
+        panel.setBorder(BorderFactory.createLineBorder(Color.decode("#051226"), 3));
         panel.setBackground(Color.decode(panelColor));
     }
     public static void showMenu(){
