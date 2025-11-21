@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import javax.swing.plaf.basic.BasicScrollBarUI;
+
 public class Main extends JFrame {
     public Main() {
         setTitle("Library");
@@ -91,7 +92,6 @@ public class Main extends JFrame {
 
         search.setBorder(BorderFactory.createLineBorder(Color.GRAY, 3));
 
-
         Account.addActionListener(e -> UserAccount(middlePanel, topPanel, panelColor));
         bookList.addActionListener(e -> showBookList(middlePanel, topPanel, panelColor,buttonColor));
         borrowBook.addActionListener(e -> showBorrowBook(middlePanel, topPanel, panelColor));
@@ -118,11 +118,9 @@ public class Main extends JFrame {
         contentPanel.setLayout(new GridLayout(0, 5, 5, 5)); 
 
         //placeholder btn
-        for (int i = 1; i <= 50; i++) {
+        for (int i = 1; i <= 500; i++) {
             JButton btn = new JButton("Book " + i);
-            btn.setPreferredSize(new Dimension(100, 150));
-            btn.setMaximumSize(new Dimension(100, 150));
-            btn.setMinimumSize(new Dimension(100, 150));
+            btn.setPreferredSize(new Dimension(90, 170));
             btn.setBackground(Color.decode(buttonColor));
             btn.setForeground(Color.LIGHT_GRAY);
             contentPanel.add(btn);
